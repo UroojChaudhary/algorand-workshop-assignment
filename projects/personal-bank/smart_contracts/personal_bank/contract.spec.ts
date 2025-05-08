@@ -4,7 +4,6 @@ import { PersonalBank } from './contract.algo'
 
 describe('PersonalBank contract', () => {
   const context = new TestExecutionContext()
-
   it('Deposits funds into the contract', () => {
     // Arrange
     const contract = context.contract.create(PersonalBank)
@@ -15,15 +14,11 @@ describe('PersonalBank contract', () => {
       amount: depositAmount,
     })
 
-    // Encode transaction if required
-    const encodedTxn = depositTxn.toBase64()
-
     // Act
-    const output = contract.deposit(encodedTxn)
+    const output = contract.deposit(depositTxn)
 
     console.log('output', output)
     console.log('depositAmount', depositAmount)
-
     // Assert
     expect(output.valueOf()).toBe(depositAmount.valueOf())
   })
@@ -39,12 +34,11 @@ describe('PersonalBank contract', () => {
     })
 
     // Act
-    contract.deposit(depositTxn.toBase64())
+    contract.deposit(depositTxn)
     const output = contract.withdraw()
 
     console.log('output', output)
     console.log('depositAmount', depositAmount)
-
     // Assert
     expect(output.valueOf()).toBe(depositAmount.valueOf())
   })
