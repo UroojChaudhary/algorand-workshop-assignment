@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # algorand-typescript-workshop
 
 Welcome to your new AlgoKit project!
@@ -20,3 +21,7 @@ To get started execute:
 2. `algokit init` - invoke this command inside a github codespace to launch an interactive wizard to guide you through the process of creating a new AlgoKit project
 
 Powered by [Copier templates](https://copier.readthedocs.io/en/stable/).
+=======
+# algorand-workshop-assignment
+A submission for the Algorand Workshop assignment. This repository includes the code for a smart contract deployed on the Algorand TestNet as part of the workshop requirements.
+>>>>>>> c0b1d44838c5476e1a39181bcfbd9b02bb211c8e
