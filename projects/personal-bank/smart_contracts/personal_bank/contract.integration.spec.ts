@@ -33,7 +33,7 @@ describe('personal bank contract', () => {
     return { client: appClient }
   }
 
-  test('deposit & withdraw', async () => {
+  test('deposit & withdraw with GitHub handle', async () => {
     // Arrange
     const { testAccount, algorand } = localnet.context
     const { client } = await deploy(testAccount)
@@ -45,11 +45,12 @@ describe('personal bank contract', () => {
       amount: AlgoAmount.Algos(1),
     })
 
-    // Act: Deposit
+    // Act: Deposit with GitHub handle
+    const githubHandle = 'UroojChaudhary' // Replace with your GitHub username
     await client.send.deposit({
       args: {
         payTxn: payTxn.signTransaction(),
-        githubHandle: 'YourGitHubHandle',
+        githubHandle, // Store the GitHub handle
       },
       populateAppCallResources: true,
     })
