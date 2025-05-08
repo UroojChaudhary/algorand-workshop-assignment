@@ -19,7 +19,7 @@ export async function deploy() {
 
   console.log('\n', `🚀 Deploying ${typedFactory.appName} Application...`, '\n')
 
-  // Deploy the contract with the following settings:algk
+  // Deploy the contract with the following settings:
   // - onUpdate: 'append' -> create new app instead of updating if code changes
   // - onSchemaBreak: 'append' -> create new app if storage schema changes
   const { appClient, result } = await typedFactory.deploy({
