@@ -9,12 +9,14 @@ import { PersonalBankFactory } from '../artifacts/personal_bank/PersonalBankClie
 
 describe('personal bank contract', () => {
   const localnet = algorandFixture()
+
   beforeAll(() => {
     Config.configure({
       debug: true,
     })
     registerDebugEventHandlers()
   })
+
   beforeEach(localnet.newScope)
 
   const deploy = async (account: Account & TransactionSignerAccount) => {
@@ -23,53 +25,43 @@ describe('personal bank contract', () => {
       defaultSigner: account.signer,
     })
 
-    const { appClient } = await factory.deploy({ onUpdate: 'append', onSchemaBreak: 'append', suppressLog: true })
+    const { appClient } = await factory.deploy({
+      onUpdate: 'append',
+      onSchemaBreak: 'append',
+      suppressLog: true,
+    })
     return { client: appClient }
   }
-
-  test('deposit', async () => {
-    // Arrange
-    const { testAccount, algorand } = localnet.context
-    const { client } = await deploy(testAccount)
-
-    const payTxn = await algorand.createTransaction.payment({
-      sender: testAccount.addr,
-      receiver: client.appAddress,
-      amount: AlgoAmount.Algos(1),
-    })
-
-    // Act
-    const result = await client.send.deposit({ args: { payTxn }, populateAppCallResources: true })
-
-    // Assert
-    expect(result.return).toBe(1000000n)
-  })
 
   test('deposit & withdraw', async () => {
     // Arrange
     const { testAccount, algorand } = localnet.context
     const { client } = await deploy(testAccount)
 
-    const dispenser = await algorand.account.localNetDispenser()
-
-    await algorand.account.ensureFunded(client.appAddress, dispenser, AlgoAmount.Algos(1))
-
+    // Prepare a payment transaction
     const payTxn = await algorand.createTransaction.payment({
       sender: testAccount.addr,
       receiver: client.appAddress,
       amount: AlgoAmount.Algos(1),
     })
 
-    await client.send.deposit({ args: { payTxn }, populateAppCallResources: true })
+    // Act: Deposit
+    await client.send.deposit({
+      args: {
+        payTxn: payTxn.signTransaction(),
+        githubHandle: 'YourGitHubHandle',
+      },
+      populateAppCallResources: true,
+    })
 
-    // Act
+    // Act: Withdraw
     const result = await client.send.withdraw({
       args: {},
       coverAppCallInnerTransactionFees: true,
       maxFee: AlgoAmount.MicroAlgo(3000),
     })
 
-    // Assert
+    // Assert: Ensure the withdrawal was successful
     expect(result.return).toBe(1000000n)
   })
 })

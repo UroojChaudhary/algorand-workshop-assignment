@@ -3,7 +3,16 @@ min_version = "v2.6.0"
 
 [project]
 type = "frontend"
-name = 'workshop-script'
+name = "workshop-script"
 
+# Add the Algorand testnet and indexer URLs to the project
+[algokit.network]
+algod_server = "https://testnet-api.4160.nodely.dev"
+algod_token = ""  # Token might not be required for free service
+algod_port = 443
+
+indexer_url = "https://testnet-idx.4160.nodely.dev"
+
+# Optionally specify your deploy command if needed
 [project.run]
-start = { commands = ['npm run start'], description = 'Start workshop script' }
+start = { commands = ["npm run start"], description = "Start workshop script" }
